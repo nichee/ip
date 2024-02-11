@@ -9,14 +9,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 public class DialogBox extends HBox {
 
-    public DialogBox(Label l, ImageView iv) {
+    private Label text;
+    private ImageView displayPicture;
 
-        l.setWrapText(true);
-        iv.setFitWidth(100.0);
-        iv.setFitHeight(100.0);
+    public DialogBox(Label l, ImageView iv) {
+        text = l;
+        displayPicture = iv;
+
+        text.setWrapText(true);
+        displayPicture.setFitWidth(100.0);
+        displayPicture.setFitHeight(100.0);
 
         this.setAlignment(Pos.TOP_RIGHT);
-        this.getChildren().addAll(l, iv);
+        this.getChildren().addAll(text, displayPicture);
     }
 
     /**
@@ -33,11 +38,9 @@ public class DialogBox extends HBox {
         return new DialogBox(l, iv);
     }
 
-
     public static DialogBox getDukeDialog(Label l, ImageView iv) {
         var db = new DialogBox(l, iv);
         db.flip();
         return db;
     }
-
 }

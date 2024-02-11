@@ -8,11 +8,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class VBoxOutputStream extends OutputStream {
-    private final VBox dialogContainer;
+    private VBox dialogContainer;
     private final StringBuilder buffer = new StringBuilder();
-    private final BlockingQueue<String> lines = new LinkedBlockingQueue<>();
-
-
+    private BlockingQueue<String> lines = new LinkedBlockingQueue<>();
 
     public VBoxOutputStream(VBox dialogContainer) {
         this.dialogContainer = dialogContainer;
@@ -35,14 +33,22 @@ public class VBoxOutputStream extends OutputStream {
 
     @Override
     public void write(int b) {
+        // Append the character to the buffer
         buffer.append((char) b);
+        // Check if the character is a newline ('\n')
         if (b == '\n') {
             try {
+                // Add the buffered line to the queue
                 lines.put(buffer.toString());
+                // Reset the buffer for the next line of output
                 buffer.setLength(0);
             } catch (InterruptedException e) {
+                // Restore the interrupted status
                 Thread.currentThread().interrupt();
             }
         }
     }
+
+    // Override other write methods as needed, handling byte arrays and buffering output
+    // until a newline character is seen, then adding the complete line to 'lines'.
 }
